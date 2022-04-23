@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import styled, {ThemeProvider} from 'styled-components';
 import GlobalStyle from "./GlobalStyle";
 import {theme} from "./Theme";
@@ -13,11 +13,11 @@ const AppWrapper = styled.div`
   z-index: 0;
 `;
 
-const StylesProvider = () => (
+const StylesProvider: React.FC<{ children: ReactNode }> = ({children}) => (
     <AppWrapper>
         <GlobalStyle/>
         <ThemeProvider theme={theme}>
-            {/*{children}*/}
+            {children}
         </ThemeProvider>
     </AppWrapper>
 );
