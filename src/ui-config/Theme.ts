@@ -8,7 +8,8 @@ export const theme: DefaultTheme = {
         gray: '#606060',
         error: '#861C1C',
         light_gray_border: '#dedede',
-        gray_lightest: '#efefef'
+        gray_lightest: '#efefef',
+        green_light: '#e1ffb9'
     },
     fontWeight: {
         regular: 400,

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {SubmitHandler, useForm} from "react-hook-form";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import Input from "../../shared/Input";
 import {Heading} from "../../shared/Heading";
 import Button from "../../shared/Button";
@@ -11,16 +11,14 @@ import Loader from "../../shared/Loader";
 
 type Inputs = {
     email: string,
-    password: string,
-    confirmPassword: string,
 };
 
 const SignUpForm = () => {
-    const {signup} = useAuth()
-    let navigate = useNavigate();
+    const {resetPassword} = useAuth()
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
 
     const [error, setError] = useState(false)
+    const [success, setSuccess] = useState(false)
     const [loading, setLoading] = useState(false)
     const [passwordNotMatch, setPasswordNotMatch] = useState(false)
 
@@ -29,18 +27,12 @@ const SignUpForm = () => {
         setPasswordNotMatch(false)
     }
 
-    const onSubmit: SubmitHandler<Inputs> = async ({email, password, confirmPassword}) => {
+    const onSubmit: SubmitHandler<Inputs> = async ({email}) => {
         try {
             resetAuthError()
-
-            if (password !== confirmPassword) {
-                setPasswordNotMatch(true)
-                return
-            }
-
             setLoading(true)
-            await signup(email, password)
-            navigate("/", {replace: true});
+            await resetPassword(email)
+            setSuccess(true)
         } catch {
             setError(true)
         } finally {
@@ -54,7 +46,7 @@ const SignUpForm = () => {
                 <Wrapper>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Heading margin={'0 0 3rem 0'}>
-                            Rejestracja
+                            Resetuj hasło
                         </Heading>
                         <InputsWrapper>
                             <Input
@@ -63,29 +55,17 @@ const SignUpForm = () => {
                                 hasError={errors.email}
                                 onFocus={resetAuthError}
                                 placeholder='jan.kowalski@example.com'
+                                disabled={success}
                             />
-                            <Input
-                                label="Hasło"
-                                placeholder={'Minimum 6 znaków'}
-                                {...register("password", {required: true})}
-                                type="Password"
-                                hasError={errors.password}
-                                onFocus={resetAuthError}
-                            />
-                            <Input
-                                label="Potwierdź hasło"
-                                placeholder={'Minimum 6 znaków'}
-                                {...register("confirmPassword", {required: true})}
-                                type="Password"
-                                hasError={errors.confirmPassword}
-                                onFocus={resetAuthError}
-                            />
-                            {error && <AuthFailedError visible>Nie udało się utworzyć konta</AuthFailedError>}
-                            <AuthFailedError visible={passwordNotMatch}>Podane hasła nie są identyczne</AuthFailedError>
+                            {error && <AuthFailedError visible>Nie udało się zresetować hasła lub nie znaleziono
+                                adresu</AuthFailedError>}
+                            {success && <AuthFailedError success visible={success}>Na podany adres wysłano dalsze
+                                instrukcje</AuthFailedError>}
                         </InputsWrapper>
-                        <Button disabled={passwordNotMatch} type="submit" width={'100%'}>Zarejestruj się</Button>
+                        {!success &&
+                            <Button disabled={passwordNotMatch} type="submit" width={'100%'}>Resetuj hasło</Button>}
                         <Paragraph fontSize={'1.2rem'}>
-                            Posiadasz już konto?
+                            Pamiętasz hasło?
                             <Link to={ROUTES.PUBLIC.LOGIN} style={{textDecoration: 'none'}}>
                                 <span>Wróc do logowania</span>
                             </Link>

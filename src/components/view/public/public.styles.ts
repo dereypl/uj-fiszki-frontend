@@ -41,14 +41,15 @@ export const RequiredErrorLabel = styled.p`
   padding: 0;
 `;
 
-export const AuthFailedError = styled.div<{ visible?: boolean }>`
+export const AuthFailedError = styled.div<{ visible?: boolean, success?: boolean}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({theme}) => theme.colors.error};
+  color: ${({theme, success}) => success? theme.colors.gray : theme.colors.error };
   font-size: ${({theme}) => theme.fontSize.s};
   font-weight: ${({theme}) => theme.fontWeight.regular};
-  background-color: rgba(226, 101, 101, 0.2);
+  background-color: ${({theme, success}) => success? theme.colors.green_light : `rgba(226, 101, 101, 0.2)` };
+
   height: 3rem;
   border-radius: 0.8rem;
   opacity: 0;

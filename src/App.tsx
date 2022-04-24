@@ -7,6 +7,7 @@ import SignIn from "./components/view/public/SignIn";
 import PrivateRoute from "./routes/PrivateRoute";
 import {ROUTES} from "./routes/index.js";
 import SignUpForm from "./components/view/public/SignUp";
+import ForgotPassword from "./components/view/public/ResetPassword";
 
 export const App = () => {
     return (
@@ -16,6 +17,7 @@ export const App = () => {
                     <Routes>
                         <Route path={ROUTES.PUBLIC.LOGIN} element={<SignIn/>}/>
                         <Route path={ROUTES.PUBLIC.REGISTRATION} element={<SignUpForm/>}/>
+                        <Route path={ROUTES.PUBLIC.PASSWORD_RESET} element={<ForgotPassword/>}/>
                         <Route element={<PrivateRoute/>}>
                             <Route path={ROUTES.PROTECTED.DASHBOARD} element={<Dashboard/>}/>
                         </Route>

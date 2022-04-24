@@ -5,7 +5,7 @@ import Input from "../../shared/Input";
 import {Heading} from "../../shared/Heading";
 import Button from "../../shared/Button";
 import {ROUTES} from '../../../routes/index.js';
-import {AuthFailedError, Box, InputsWrapper, Paragraph, Wrapper} from './Login.styles';
+import {AuthFailedError, Box, InputsWrapper, Paragraph, Wrapper} from './public.styles';
 import {useAuth} from "../../../context/AuthContext";
 import Loader from "../../shared/Loader";
 
@@ -75,7 +75,7 @@ const SignInForm = () => {
                         </Button>
                         <Paragraph fontSize={'1.2rem'}>
                             Nie pamiętasz hasła?
-                            <Link to={ROUTES.PUBLIC.PASSWORD_RECOVER} style={{textDecoration: 'none'}}>
+                            <Link to={ROUTES.PUBLIC.PASSWORD_RESET} style={{textDecoration: 'none'}}>
                                 <span>Zresetuj hasło</span>
                             </Link>
                         </Paragraph>
