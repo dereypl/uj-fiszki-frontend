@@ -1,7 +1,7 @@
 import {collection, doc, getDoc, getDocs} from "firebase/firestore";
-import {db} from "./firebase";
+import {db} from "../firebase";
 
-class DataService {
+export abstract class DataService {
     collection;
 
     constructor(collectionName: string) {
@@ -33,6 +33,5 @@ class DataService {
 
 }
 
-export const SetService = new DataService("set");
-export const WordService = new DataService("word");
+
 
