@@ -67,7 +67,7 @@ export const Box = styled.div`
   flex-direction: column;
   align-items: center;
   width: 80%;
-  max-width: 65rem;
+  max-width: 60rem;
   min-width: 46rem;
   height: 55rem;
   border-radius: 1.5rem;

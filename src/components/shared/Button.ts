@@ -34,7 +34,7 @@ const Button = styled.button<{ width?: string, marginTop?: string, height?: stri
 
 
     &:hover {
-      color: ${({theme}) => theme.colors.main_dark};
+      color: ${({theme}) => theme.colors.light_gray_border};
     }
   }
 

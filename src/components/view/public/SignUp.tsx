@@ -12,21 +12,34 @@ import Loader from "../../shared/Loader";
 type Inputs = {
     email: string,
     password: string,
+    confirmPassword: string,
 };
 
-const LoginForm = () => {
+const SignUpForm = () => {
+    const {signup} = useAuth()
+    let navigate = useNavigate();
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
-    const {login} = useAuth()
+
     const [error, setError] = useState(false)
     const [loading, setLoading] = useState(false)
-    let navigate = useNavigate();
-    const resetAuthError = () => setError(false)
+    const [passwordNotMatch, setPasswordNotMatch] = useState(false)
 
-    const onSubmit: SubmitHandler<Inputs> = async ({email, password}) => {
+    const resetAuthError = () => {
+        setError(false)
+        setPasswordNotMatch(false)
+    }
+
+    const onSubmit: SubmitHandler<Inputs> = async ({email, password, confirmPassword}) => {
         try {
             resetAuthError()
+
+            if (password !== confirmPassword) {
+                setPasswordNotMatch(true)
+                return
+            }
+
             setLoading(true)
-            await login(email, password)
+            await signup(email, password)
             navigate("/", {replace: true});
         } catch {
             setError(true)
@@ -35,14 +48,13 @@ const LoginForm = () => {
         }
     }
 
-
     return (
         <Box>
             {loading ? <Loader/> :
                 <Wrapper>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <Heading margin={'0 0 2rem 0'}>
-                            Logowanie
+                        <Heading margin={'0 0 3rem 0'}>
+                            Rejestracja
                         </Heading>
                         <InputsWrapper>
                             <Input
@@ -54,27 +66,28 @@ const LoginForm = () => {
                             />
                             <Input
                                 label="Hasło"
-                                placeholder={'Wpisz hasło'}
+                                placeholder={'Minimum 6 znaków'}
                                 {...register("password", {required: true})}
                                 type="Password"
                                 hasError={errors.password}
                                 onFocus={resetAuthError}
                             />
-                            <AuthFailedError visible={error}>Email lub hasło nieprawidłowe</AuthFailedError>
+                            <Input
+                                label="Potwierdź hasło"
+                                placeholder={'Minimum 6 znaków'}
+                                {...register("confirmPassword", {required: true})}
+                                type="Password"
+                                hasError={errors.confirmPassword}
+                                onFocus={resetAuthError}
+                            />
+                            {error && <AuthFailedError visible>Nie udało się utworzyć konta</AuthFailedError>}
+                            <AuthFailedError visible={passwordNotMatch}>Podane hasła nie są identyczne</AuthFailedError>
                         </InputsWrapper>
-                        <Button type="submit" width={'100%'}>Zaloguj się</Button>
-                        <Button
-                            width={'100%'}
-                            outline
-                            type='button'
-                            // onClick={handleRegisterRedirect}
-                        >
-                            Zarejestruj się
-                        </Button>
+                        <Button disabled={passwordNotMatch} type="submit" width={'100%'}>Zarejestruj się</Button>
                         <Paragraph fontSize={'1.2rem'}>
-                            Nie pamiętasz hasła?
-                            <Link to={ROUTES.PUBLIC.PASSWORD_RECOVER} style={{textDecoration: 'none'}}>
-                                <span>Zresetuj hasło</span>
+                            Posiadasz już konto?
+                            <Link to={ROUTES.PUBLIC.LOGIN} style={{textDecoration: 'none'}}>
+                                <span>Wróc do logowania</span>
                             </Link>
                         </Paragraph>
                     </form>
@@ -84,4 +97,4 @@ const LoginForm = () => {
     );
 };
 
-export default LoginForm;
+export default SignUpForm;
