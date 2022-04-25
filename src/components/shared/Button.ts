@@ -1,9 +1,10 @@
 import styled, {css} from 'styled-components';
 
-const Button = styled.button<{ width?: string, marginTop?: string, height?: string, outline?: boolean, logout?: boolean }>`
+const Button = styled.button<{ width?: string, marginTop?: string, marginRight?: string, height?: string, outline?: boolean, logout?: boolean }>`
   display: flex;
   padding: 0;
   margin-top: ${({marginTop}) => marginTop || '0'};
+  margin-right: ${({marginRight}) => marginRight || '0'};
   background-color: ${({theme}) => theme.colors.main_dark};
   width: ${({width}) => width || '30rem'};
   height: ${({height}) => height || '4.5rem'};
@@ -46,7 +47,6 @@ const Button = styled.button<{ width?: string, marginTop?: string, height?: stri
     color: ${({theme}) => theme.colors.gray};
     background-color: transparent;
     border: 0.1rem solid ${({theme}) => theme.colors.gray};
-    margin-top: 1rem;
 
     &:hover {
       background-image: linear-gradient(120deg, transparent 0%, transparent 50%, #777777 50%, #606060);

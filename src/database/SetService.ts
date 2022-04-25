@@ -1,12 +1,11 @@
 import {DataService} from "./abstr/DataService";
-import {collection, getDocs, query, where} from "firebase/firestore";
-import {db} from "./firebase";
+import {getDocs, query, where, addDoc} from "firebase/firestore";
 import {TSet} from "./DataTypes";
 
 
 class SetService extends DataService {
     getAllByUserId = async (uid: string) => {
-        const q = query(collection(db, "set"), where("userId", "==", uid));
+        const q = query(this.collection, where("userId", "==", uid));
         const snapshot = await getDocs(q);
 
         return snapshot.docs.map((doc) => {
@@ -18,7 +17,7 @@ class SetService extends DataService {
     }
 
     getAllPublic = async () => {
-        const q = query(collection(db, "set"), where("isPublic", "==", true));
+        const q = query(this.collection, where("isPublic", "==", true));
         const snapshot = await getDocs(q);
 
         return snapshot.docs.map((doc) => {
@@ -27,6 +26,11 @@ class SetService extends DataService {
                 ...doc.data(),
             };
         }) as TSet[]
+    }
+
+
+    create = (name: string, uid: string) => {
+        return addDoc(this.collection, {name, userId: uid, isPublic: false});
     }
 }
 

@@ -30,7 +30,6 @@ export abstract class DataService {
             return null;
         }
     };
-
 }
 
 

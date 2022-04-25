@@ -67,6 +67,7 @@ const SignInForm = () => {
                         <Button type="submit" width={'100%'}>Zaloguj się</Button>
                         <Button
                             width={'100%'}
+                            marginTop={'1rem'}
                             outline
                             type='button'
                             onClick={handleRegisterRedirect}

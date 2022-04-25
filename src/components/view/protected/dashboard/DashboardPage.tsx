@@ -8,6 +8,7 @@ import SetTypeSwitcher from "./SetTypeSwitcher";
 import {AddNewSetCard, Grid, InfoText, StyledAddCircleOutlineIcon} from './DashboardPage.styles';
 import {AppWrapper} from '../protected.styles';
 import Header from "../../../shared/Header";
+import AddSetModal from "./AddSetModal";
 
 export const SetTypeContext = createContext<{ showPublic: boolean, setShowPublic: React.Dispatch<React.SetStateAction<boolean>> }>({
     showPublic: false,
@@ -19,15 +20,18 @@ const DashboardPage = () => {
 
     const [sets, setSets] = useState<TSet[]>([])
     const [loading, setLoading] = useState(false)
+    const [addSetModalVisible, setAddSetModalVisible] = useState(false)
     const [showPublic, setShowPublic] = useState(false);
 
+    const loadData = async () => {
+        setLoading(true)
+        const sets = showPublic ? await SetService.getAllPublic() : await SetService.getAllByUserId(uid);
+        setSets(sets)
+        setLoading(false)
+    }
+
     useEffect(() => {
-        (async () => {
-            setLoading(true)
-            const sets = showPublic ? await SetService.getAllPublic() : await SetService.getAllByUserId(uid);
-            setSets(sets)
-            setLoading(false)
-        })()
+        loadData()
     }, [showPublic, uid])
 
     return (
@@ -44,13 +48,14 @@ const DashboardPage = () => {
                     ? <Loader/>
                     : <Grid>
                         {sets.map(set => <SetCard key={set.id} {...set}/>)}
-                        {!showPublic && <AddNewSetCard>
+                        {!showPublic && <AddNewSetCard onClick={() => setAddSetModalVisible(true)}>
                             <StyledAddCircleOutlineIcon fontSize={"inherit"}/>
                             <p>Dodaj zbiór</p>
                         </AddNewSetCard>}
                         {showPublic && !sets.length && <p>Brak publicznych zbiorów.</p>}
                     </Grid>
                 }
+                {addSetModalVisible && <AddSetModal onSuccess={loadData} hideModal={() => setAddSetModalVisible(false)}/>}
             </AppWrapper>
         </SetTypeContext.Provider>
     );
