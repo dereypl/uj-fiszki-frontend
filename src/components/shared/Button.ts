@@ -1,6 +1,6 @@
 import styled, {css} from 'styled-components';
 
-const Button = styled.button<{ width?: string, marginTop?: string, height?: string, outline?: boolean }>`
+const Button = styled.button<{ width?: string, marginTop?: string, height?: string, outline?: boolean, logout?: boolean }>`
   display: flex;
   padding: 0;
   margin-top: ${({marginTop}) => marginTop || '0'};
@@ -52,6 +52,11 @@ const Button = styled.button<{ width?: string, marginTop?: string, height?: stri
       background-image: linear-gradient(120deg, transparent 0%, transparent 50%, #777777 50%, #606060);
       color: white;
     }
+  `}
+
+  ${({logout}) => logout && css`
+    margin-top: 0;
+    width: 15rem;
   `}
 `;
 

@@ -16,6 +16,18 @@ class SetService extends DataService {
             };
         }) as TSet[]
     }
+
+    getAllPublic = async () => {
+        const q = query(collection(db, "set"), where("isPublic", "==", true));
+        const snapshot = await getDocs(q);
+
+        return snapshot.docs.map((doc) => {
+            return {
+                id: doc.id,
+                ...doc.data(),
+            };
+        }) as TSet[]
+    }
 }
 
 export default new SetService("set");
