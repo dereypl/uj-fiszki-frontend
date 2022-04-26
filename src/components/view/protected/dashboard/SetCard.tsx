@@ -3,6 +3,8 @@ import styled from "styled-components";
 import {TSet} from "../../../../database/DataTypes";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import PublicIcon from '@mui/icons-material/Public';
+import {useNavigate} from "react-router-dom";
+import {ROUTES} from "../../../../routes/index.js";
 
 export const Container = styled.div`
   display: flex;
@@ -38,8 +40,11 @@ export const PublicIconWrapper = styled.div`
 
 
 const SetCard: FC<TSet> = ({name, userId, id, isPublic}) => {
+    const navigate = useNavigate();
+    const handleRedirect = () => navigate(`${ROUTES.PROTECTED.MANAGE_SET}/${id}`)
+
     return (
-        <Container>
+        <Container onClick={handleRedirect}>
             <ContentCopyIcon fontSize={"large"}/>
             <h3>{name}</h3>
             {isPublic && <PublicIconWrapper>

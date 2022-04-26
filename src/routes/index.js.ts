@@ -5,6 +5,8 @@ export const ROUTES = {
         PASSWORD_RESET: '/reset-password',
     },
     PROTECTED: {
-        DASHBOARD: '/'
+        DASHBOARD: '/',
+        SET: '/set',
+        MANAGE_SET: '/manage/set'
     }
 };

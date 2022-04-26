@@ -15,7 +15,7 @@ export const HeaderContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin: 2rem 0 5rem 0;
+  margin: 2rem 0 4rem 0;
 
   p b {
     margin-left: 0.5rem;

@@ -18,8 +18,8 @@ export abstract class DataService {
         });
     };
 
-    getOne = async (id: string) => {
-        if (!id) return;
+    getOne = async (id?: string) => {
+        if (!id) return null;
         const docRef = doc(db, this.collection.path, id);
         const docSnap = await getDoc(docRef);
 

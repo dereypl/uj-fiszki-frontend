@@ -27,7 +27,7 @@ export const ModalBox = styled.div<{ height?: string }>`
   left: calc(50% - 30rem);
   background-color: white;
   z-index: 99999;
-  border-radius: 1.5rem;
+  border-radius: 0.8rem;
   align-items: center;
   flex-direction: column;
   justify-content: center;
@@ -39,7 +39,6 @@ export const ModalForm = styled.form`
   width: 80%;
   height: 80%;
   justify-content: space-between;
-
 `;
 
 export const ModalHeader = styled.div`

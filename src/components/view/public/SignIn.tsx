@@ -16,7 +16,7 @@ type Inputs = {
 
 const SignInForm = () => {
     const {login} = useAuth()
-    let navigate = useNavigate();
+    const navigate = useNavigate();
     const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
 
     const [error, setError] = useState(false)
