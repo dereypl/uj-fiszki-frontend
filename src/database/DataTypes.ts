@@ -4,3 +4,10 @@ export type TSet = {
     name: string,
     userId: string
 }
+
+export type TWord = {
+    id: string,
+    definition: string,
+    word: string,
+    setId: string
+}
