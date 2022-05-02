@@ -1,5 +1,5 @@
 import React, {useEffect, useReducer, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Header from "../../../shared/Header";
 import {AppWrapper} from '../protected.styles';
 import SetService from "../../../../database/SetService";
@@ -10,6 +10,7 @@ import WordService from "../../../../database/WordService";
 import WordRow from "./WordRow";
 import styled from "styled-components";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import {ROUTES} from "../../../../routes/index.js";
 //
 // const initialState: { words: TWord[] } = {
 //     words: []
@@ -65,9 +66,15 @@ export const AddNewWordRow = styled.div`
   }
 `;
 
+export const GoBackButton = styled.p`
+  cursor: pointer;
+  font-size: ${({theme}) => theme.fontSize.s};
+`;
+
 
 const ManageSetPage = () => {
     const {id} = useParams()
+    const navigate = useNavigate();
     const [set, setSet] = useState<TSet | null>(null)
     const [words, setWords] = useState<TWord[]>([])
     const [loading, setLoading] = useState(false)
@@ -96,12 +103,15 @@ const ManageSetPage = () => {
         loadData()
     }, [id])
 
+    const handleReturnToDashboard = () => navigate(ROUTES.PROTECTED.DASHBOARD)
+
     return (
         <AppWrapper>
             <Header/>
             {loading
                 ? <Loader/>
                 : <>
+                    <GoBackButton onClick={handleReturnToDashboard}>{'< powrót do strony głównej'}</GoBackButton>
                     <h2>Edycja zbioru</h2>
                     <h3>{set?.name}</h3>
                     {words.map(word => <WordRow setCurrentlyEditedWordId={setCurrentlyEditedWordId}

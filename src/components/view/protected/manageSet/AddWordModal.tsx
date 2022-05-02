@@ -58,7 +58,6 @@ const AddWordModal: FC<TProps> = ({hideModal, onSuccess, currentlyEditedWordId})
         const loadData = async () => {
             setLoading(true)
             const {word, definition} = await WordService.getOne(currentlyEditedWordId as string) as TWord;
-            console.log(word);
             setValue("word", word)
             setValue("definition", definition)
             setLoading(false)
@@ -67,8 +66,6 @@ const AddWordModal: FC<TProps> = ({hideModal, onSuccess, currentlyEditedWordId})
         useEffect(() => {
             if (editMode) loadData()
         }, [])
-
-        console.log({currentlyEditedWordId});
 
         return (
             <>
