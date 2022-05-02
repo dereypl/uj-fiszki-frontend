@@ -1,5 +1,5 @@
 import {DataService} from "./abstr/DataService";
-import {addDoc, doc, getDocs, query, updateDoc, where} from "firebase/firestore";
+import {addDoc, deleteDoc, doc, getDocs, query, updateDoc, where} from "firebase/firestore";
 import {TWord} from "./DataTypes";
 import {db} from "./firebase";
 
@@ -12,6 +12,10 @@ class WordService extends DataService {
     update = (word: string, definition: string, wordId: string) => {
         const ref = doc(db, this.collection.id, wordId);
         return updateDoc(ref, {word, definition});
+    }
+
+    delete = (wordId: string) => {
+        return deleteDoc(doc(db, this.collection.id, wordId));
     }
 
     getAllBySetId = async (setId: string) => {

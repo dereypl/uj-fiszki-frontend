@@ -11,6 +11,7 @@ import WordRow from "./WordRow";
 import styled from "styled-components";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import {ROUTES} from "../../../../routes/index.js";
+
 //
 // const initialState: { words: TWord[] } = {
 //     words: []
@@ -115,7 +116,7 @@ const ManageSetPage = () => {
                     <h2>Edycja zbioru</h2>
                     <h3>{set?.name}</h3>
                     {words.map(word => <WordRow setCurrentlyEditedWordId={setCurrentlyEditedWordId}
-                                                key={word.id} {...word} />)}
+                                                key={word.id} {...word} loadSetData={loadData} />)}
                     <AddNewWordRow onClick={() => setCurrentlyEditedWordId('new')}>
                         <StyledAddCircleOutlineIcon fontSize={'medium'}/>
                         <p>Dodaj pojęcie</p>
