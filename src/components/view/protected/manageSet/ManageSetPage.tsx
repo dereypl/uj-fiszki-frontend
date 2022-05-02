@@ -71,7 +71,7 @@ const ManageSetPage = () => {
     const [set, setSet] = useState<TSet | null>(null)
     const [words, setWords] = useState<TWord[]>([])
     const [loading, setLoading] = useState(false)
-    const [addWordModalVisible, setAddWordModalVisible] = useState(false)
+    const [currentlyEditedWordId, setCurrentlyEditedWordId] = useState<string | null>(null)
 
     // const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -104,15 +104,17 @@ const ManageSetPage = () => {
                 : <>
                     <h2>Edycja zbioru</h2>
                     <h3>{set?.name}</h3>
-                    {words.map(word => <WordRow key={word.id} {...word}/>)}
-                    <AddNewWordRow onClick={() => setAddWordModalVisible(true)}>
+                    {words.map(word => <WordRow setCurrentlyEditedWordId={setCurrentlyEditedWordId}
+                                                key={word.id} {...word} />)}
+                    <AddNewWordRow onClick={() => setCurrentlyEditedWordId('new')}>
                         <StyledAddCircleOutlineIcon fontSize={'medium'}/>
                         <p>Dodaj pojęcie</p>
                     </AddNewWordRow>
                 </>
             }
-            {addWordModalVisible && <AddWordModal
-                hideModal={() => setAddWordModalVisible(false)}
+            {currentlyEditedWordId && <AddWordModal
+                currentlyEditedWordId={currentlyEditedWordId}
+                hideModal={() => setCurrentlyEditedWordId(null)}
                 onSuccess={loadData}
             />}
         </AppWrapper>

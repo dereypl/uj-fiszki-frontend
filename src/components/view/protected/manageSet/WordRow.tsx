@@ -25,10 +25,10 @@ export const Container = styled.div`
 `;
 
 
-const WordRow: FC<TWord> = ({word, definition, setId}) => {
+const WordRow: FC<TWord & {setCurrentlyEditedWordId: Function}> = ({word, definition, id, setCurrentlyEditedWordId}) => {
 
     return (
-        <Container>
+        <Container onClick={() => setCurrentlyEditedWordId(id)}>
             <div>{word}</div>
             <div>{definition}</div>
         </Container>

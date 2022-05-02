@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import Button from "../../../shared/Button";
 import {AuthFailedError, InputsWrapper} from "../../public/public.styles";
 import Input from "../../../shared/Input";
@@ -14,15 +14,24 @@ import {
 import {useParams} from "react-router-dom";
 import WordService from "../../../../database/WordService";
 import Loader from "../../../shared/Loader";
+import {TWord} from "../../../../database/DataTypes";
 
 type Inputs = {
     word: string,
     definition: string,
 };
 
-const AddWordModal: FC<{ hideModal: () => void, onSuccess: () => void }> = ({hideModal, onSuccess}) => {
+type TProps = {
+    hideModal: () => void;
+    onSuccess: () => void;
+    currentlyEditedWordId: string | null;
+}
+
+const AddWordModal: FC<TProps> = ({hideModal, onSuccess, currentlyEditedWordId}) => {
         const {id} = useParams<{ id: string }>();
-        const {register, handleSubmit, formState: {errors}} = useForm<Inputs>();
+        const {register, handleSubmit, formState: {errors}, setValue} = useForm<Inputs>();
+
+        const editMode = currentlyEditedWordId !== 'new';
 
         const [error, setError] = useState(false)
         const [loading, setLoading] = useState(false)
@@ -31,7 +40,12 @@ const AddWordModal: FC<{ hideModal: () => void, onSuccess: () => void }> = ({hid
             try {
                 setError(false)
                 setLoading(true)
-                await WordService.create(word, definition, id as string)
+
+                if (editMode) {
+                    await WordService.update(word, definition, currentlyEditedWordId as string)
+                } else {
+                    await WordService.create(word, definition, id as string)
+                }
                 onSuccess()
                 hideModal()
             } catch {
@@ -41,13 +55,28 @@ const AddWordModal: FC<{ hideModal: () => void, onSuccess: () => void }> = ({hid
             }
         }
 
+        const loadData = async () => {
+            setLoading(true)
+            const {word, definition} = await WordService.getOne(currentlyEditedWordId as string) as TWord;
+            console.log(word);
+            setValue("word", word)
+            setValue("definition", definition)
+            setLoading(false)
+        }
+
+        useEffect(() => {
+            if (editMode) loadData()
+        }, [])
+
+        console.log({currentlyEditedWordId});
+
         return (
             <>
                 <ModalBox height={'40rem'}>
                     {loading ? <Loader/> :
                         <ModalForm onSubmit={handleSubmit(onSubmit)}>
                             <ModalHeader>
-                                <h3>Dodawanie pojęcia</h3>
+                                <h3>{editMode ? 'Edycja pojęcia ' : 'Dodawanie pojęcia'}</h3>
                                 <StyledCloseIcon fontSize={'inherit'} onClick={hideModal}/>
                             </ModalHeader>
                             <InputsWrapper>
