@@ -7,6 +7,7 @@ export const ROUTES = {
     PROTECTED: {
         DASHBOARD: '/',
         SET: '/set',
-        MANAGE_SET: '/manage/set'
+        MANAGE_SET: '/manage/set',
+        LEARN_SET: '/learn/set'
     }
 };

@@ -45,7 +45,7 @@ export const StyledEditIcon = styled(EditIcon)`
   font-size: ${({theme}) => theme.fontSize.xxl};
   cursor: pointer;
   opacity: .3;
-  
+
   &:hover {
     opacity: 1;
   }
@@ -54,16 +54,20 @@ export const StyledEditIcon = styled(EditIcon)`
 
 const SetCard: FC<TSet> = ({name, userId, id, isPublic}) => {
     const navigate = useNavigate();
-    const handleRedirect = () => navigate(`${ROUTES.PROTECTED.MANAGE_SET}/${id}`)
+    const handleEditRedirect = (e: any) => {
+        e.stopPropagation()
+        navigate(`${ROUTES.PROTECTED.MANAGE_SET}/${id}`)
+    }
+    const handleLearnRedirect = () => navigate(`${ROUTES.PROTECTED.LEARN_SET}/${id}`)
 
     return (
-        <Container>
+        <Container onClick={handleLearnRedirect}>
             <ContentCopyIcon fontSize={"large"}/>
             <h3>{name}</h3>
             {isPublic && <PublicIconWrapper>
                 <PublicIcon fontSize={"inherit"}/>
             </PublicIconWrapper>}
-            <StyledEditIcon onClick={handleRedirect}/>
+            <StyledEditIcon onClick={handleEditRedirect}/>
         </Container>
     );
 };

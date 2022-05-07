@@ -9,6 +9,7 @@ import {ROUTES} from "./routes/index.js";
 import SignUpForm from "./components/view/public/SignUp";
 import ForgotPassword from "./components/view/public/ResetPassword";
 import ManageSetPage from "./components/view/protected/manageSet/ManageSetPage";
+import LearnSetPage from "./components/view/protected/learnSet/LearnSetPage";
 
 export const App = () => {
     return (
@@ -22,6 +23,7 @@ export const App = () => {
                         <Route element={<PrivateRoute/>}>
                             <Route path={ROUTES.PROTECTED.DASHBOARD} element={<DashboardPage/>}/>
                             <Route path={`${ROUTES.PROTECTED.MANAGE_SET}/:id`} element={<ManageSetPage/>}/>
+                            <Route path={`${ROUTES.PROTECTED.LEARN_SET}/:id`} element={<LearnSetPage/>}/>
                         </Route>
                     </Routes>
                 </AuthProvider>
