@@ -10,6 +10,14 @@ import styled, {css} from "styled-components";
 import {ROUTES} from "../../../../routes/index.js";
 import SetModeSwitcher from "./SetModeSwitcher";
 import Button from "../../../shared/Button";
+import BeenhereIcon from '@mui/icons-material/Beenhere';
+
+
+export const StyledBeenhereIcon = styled(BeenhereIcon)`
+  font-size: 15rem !important;
+  color: ${({theme}) => theme.colors.main_dark} !important;
+`;
+
 
 export const GoBackButton = styled.p`
   cursor: pointer;
@@ -47,6 +55,7 @@ export const Container = styled.div<{ isDefinition?: boolean }>`
   font-size: ${({theme}) => theme.fontSize.xl};
   transition: all .2s ease-in-out;
   margin-bottom: 5rem;
+  margin-top: 2rem;
 
   ${({isDefinition}) => isDefinition && css`
     color: white;
@@ -104,6 +113,8 @@ const LearnSetPage = () => {
         setRestWords(w)
     }
 
+    const isCompleted = (words.length - restWords.length) === words.length
+
     return (
         <AppWrapper>
             <Header/>
@@ -111,18 +122,25 @@ const LearnSetPage = () => {
                 ? <Loader/>
                 : <>
                     <GoBackButton onClick={handleReturnToDashboard}>{'< powrót do strony głównej'}</GoBackButton>
-                    <SetModeSwitcher checked={isDefinitionMode} setChecked={setIsDefinitionMode}/>
-                    <Wrapper>
-                        {`${words.length - restWords.length} / ${words.length}`}
-                        <Container onMouseEnter={handleInvertDefinitionMode}
-                                   onMouseLeave={handleInvertDefinitionMode}
-                                   isDefinition={isDefinitionVisible}>{isDefinitionVisible ? currentWord?.definition : currentWord?.word}</Container>
-                        <ButtonsWrapper>
-                            <Button marginRight={'1.5rem'} onClick={handleShiftElement}>Wiem</Button>
-                            <Button onClick={handlePushElement} outline>Nie wiem</Button>
-                        </ButtonsWrapper>
-                    </Wrapper>
-
+                    {isCompleted
+                        ? <Wrapper>
+                            <StyledBeenhereIcon/>
+                            <h2>Ukończono naukę!</h2>
+                        </Wrapper> :
+                        <>
+                            <SetModeSwitcher checked={isDefinitionMode} setChecked={setIsDefinitionMode}/>
+                            <Wrapper>
+                                {`${words.length - restWords.length} / ${words.length}`}
+                                <Container onMouseEnter={handleInvertDefinitionMode}
+                                           onMouseLeave={handleInvertDefinitionMode}
+                                           isDefinition={isDefinitionVisible}>{isDefinitionVisible ? currentWord?.definition : currentWord?.word}</Container>
+                                <ButtonsWrapper>
+                                    <Button marginRight={'1.5rem'} onClick={handleShiftElement}>Wiem</Button>
+                                    <Button onClick={handlePushElement} outline>Nie wiem</Button>
+                                </ButtonsWrapper>
+                            </Wrapper>
+                        </>
+                    }
                 </>
             }
         </AppWrapper>
