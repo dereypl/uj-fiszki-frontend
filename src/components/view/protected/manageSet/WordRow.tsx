@@ -27,31 +27,32 @@ export const Container = styled.div`
 `;
 
 
-const WordRow: FC<TWord & { setCurrentlyEditedWordId: Function, loadSetData: Function }> = ({
-                                                                                                word,
-                                                                                                definition,
-                                                                                                id,
-                                                                                                setCurrentlyEditedWordId,
-                                                                                                loadSetData
-                                                                                            }) => {
+const WordRow: FC<TWord & { setCurrentlyEditedWordId: Function, loadSetData: Function }> =
+    ({
+         word,
+         definition,
+         id,
+         setCurrentlyEditedWordId,
+         loadSetData
+     }) => {
 
-    const handleWordDelete = async (e: any) => {
-        e.stopPropagation()
-        try {
-            await WordService.delete(id);
-            loadSetData()
-        } catch (e) {
-            console.error(`cannot delete word id: ${id}`)
+        const handleWordDelete = async (e: any) => {
+            e.stopPropagation()
+            try {
+                await WordService.delete(id);
+                loadSetData()
+            } catch (e) {
+                console.error(`cannot delete word id: ${id}`)
+            }
         }
-    }
 
-    return (
-        <Container onClick={() => setCurrentlyEditedWordId(id)}>
-            <div>{word}</div>
-            <div>{definition}</div>
-            <DeleteIcon onClick={(e) => handleWordDelete(e)}/>
-        </Container>
-    );
-};
+        return (
+            <Container onClick={() => setCurrentlyEditedWordId(id)}>
+                <div>{`Pojęcie: `}<b>{word}</b></div>
+                <div>{`Definicja: `}<b>{definition}</b></div>
+                <DeleteIcon onClick={(e) => handleWordDelete(e)}/>
+            </Container>
+        );
+    };
 
 export default WordRow;
