@@ -10,6 +10,7 @@ import SignUpForm from "./components/view/public/SignUp";
 import ForgotPassword from "./components/view/public/ResetPassword";
 import ManageSetPage from "./components/view/protected/manageSet/ManageSetPage";
 import LearnSetPage from "./components/view/protected/learnSet/LearnSetPage";
+import MiniGamePage from './components/view/protected/dashboard/MiniGame';
 
 export const App = () => {
     return (
@@ -24,6 +25,7 @@ export const App = () => {
                             <Route path={ROUTES.PROTECTED.DASHBOARD} element={<DashboardPage/>}/>
                             <Route path={`${ROUTES.PROTECTED.MANAGE_SET}/:id`} element={<ManageSetPage/>}/>
                             <Route path={`${ROUTES.PROTECTED.LEARN_SET}/:id`} element={<LearnSetPage/>}/>
+                            <Route path={`${ROUTES.PROTECTED.MINIGAME}/:id`} element={<MiniGamePage/>}/>
                         </Route>
                     </Routes>
                 </AuthProvider>

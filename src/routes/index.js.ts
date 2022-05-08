@@ -8,6 +8,7 @@ export const ROUTES = {
         DASHBOARD: '/',
         SET: '/set',
         MANAGE_SET: '/manage/set',
-        LEARN_SET: '/learn/set'
+        LEARN_SET: '/learn/set',
+        MINIGAME: '/minigame'
     }
 };
