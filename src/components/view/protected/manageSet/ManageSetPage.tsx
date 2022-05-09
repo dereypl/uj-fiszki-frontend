@@ -91,6 +91,7 @@ const ManageSetPage = () => {
     // }
 
     const loadData = async () => {
+        console.log(id)
         setLoading(true)
         const data = await SetService.getOne(id) as TSet;
         const words = await WordService.getAllBySetId(id as string);
