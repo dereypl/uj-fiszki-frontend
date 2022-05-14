@@ -6,6 +6,13 @@ import PublicIcon from '@mui/icons-material/Public';
 import {useNavigate} from "react-router-dom";
 import {ROUTES} from "../../../../routes/index.js";
 import EditIcon from '@mui/icons-material/Edit';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import SetService from '../../../../database/SetService';
+import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
+import Button from '../../../shared/Button';
+import {useAuth} from "../../../../context/AuthContext";
+import WordService from '../../../../database/WordService';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
 export const Container = styled.div`
   display: flex;
@@ -33,7 +40,7 @@ export const Container = styled.div`
 
 export const PublicIconWrapper = styled.div`
   position: absolute;
-  right: 3rem;
+  right: 6rem;
   top: 3rem;
   font-size: ${({theme}) => theme.fontSize.xxl};
 `;
@@ -50,9 +57,45 @@ export const StyledEditIcon = styled(EditIcon)`
     opacity: 1;
   }
 `;
+export const StyledGroupIcon = styled(GroupAddIcon)`
+  position: absolute;
+  right: 3rem;
+  top: 10rem;
+  font-size: ${({theme}) => theme.fontSize.xxl};
+  cursor: pointer;
+  opacity: .3;
+  &:hover {
+    opacity: 1;
+  }
+`;
 
+export const GroupRemoveGroupIcon = styled(GroupRemoveIcon)`
+  position: absolute;
+  right: 3rem;
+  top: 10rem;
+  font-size: ${({theme}) => theme.fontSize.xxl};
+  cursor: pointer;
+  opacity: .3;
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+export const RemoveIcon = styled(DeleteForeverIcon)`
+  position: absolute;
+  right: 3rem;
+  top: 12rem;
+  font-size: ${({theme}) => theme.fontSize.xxl};
+  cursor: pointer;
+  opacity: .3;
+  &:hover {
+    opacity: 1;
+  }
+`;
 
 const SetCard: FC<TSet> = ({name, userId, id, isPublic}) => {
+    const {currentUser: {uid}} = useAuth()
+
     const navigate = useNavigate();
     const handleEditRedirect = (e: any) => {
         e.stopPropagation()
@@ -60,6 +103,32 @@ const SetCard: FC<TSet> = ({name, userId, id, isPublic}) => {
     }
     const handleLearnRedirect = () => navigate(`${ROUTES.PROTECTED.LEARN_SET}/${id}`)
 
+    const handleShare = async (e: any) => {
+      e.stopPropagation()
+      await SetService.update(name, userId, id, !isPublic)
+    }
+
+    const handleAddingSet = async (e: any) => {
+      e.stopPropagation()
+      let words = WordService.getAllBySetId(id)
+      let set = await SetService.create(name, uid)
+      
+      ;(await words).map((w => {
+         WordService.create(w.word, w.definition, set.id)
+      }))
+    }
+
+    const handleRemove = async(e: any) => {
+      e.stopPropagation()
+      await SetService.delete(id)
+    }
+
+    let shareButton;
+    if (!isPublic) {
+      shareButton = <StyledGroupIcon onClick={handleShare} />;
+    } else {
+      shareButton = <GroupRemoveGroupIcon onClick={handleShare} />;
+    }
     return (
         <Container onClick={handleLearnRedirect}>
             <ContentCopyIcon fontSize={"large"}/>
@@ -68,6 +137,11 @@ const SetCard: FC<TSet> = ({name, userId, id, isPublic}) => {
                 <PublicIcon fontSize={"inherit"}/>
             </PublicIconWrapper>}
             <StyledEditIcon onClick={handleEditRedirect}/>
+            {shareButton}
+            {isPublic && uid != userId &&
+              <Button onClick={handleAddingSet} outline logout>Dodaj to swoich setów</Button>
+            }
+            <RemoveIcon onClick={handleRemove} />
         </Container>
     );
 };
