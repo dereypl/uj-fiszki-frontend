@@ -100,7 +100,6 @@ const ManageSetPage = () => {
         setLoading(false)
     }
 
-
     useEffect(() => {
         loadData()
     }, [id])
