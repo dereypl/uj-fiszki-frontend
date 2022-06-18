@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import SetService from '../../../../database/SetService';
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
+import Airplay from '@mui/icons-material/Airplay';
 import Button from '../../../shared/Button';
 import {useAuth} from "../../../../context/AuthContext";
 import WordService from '../../../../database/WordService';
@@ -75,6 +76,20 @@ export const StyledEditIcon = styled(EditIcon)`
     opacity: 1;
   }
 `;
+
+export const StyledAirPlayIcon = styled(Airplay)`
+  position: absolute;
+  right: 5rem;
+  top: 3rem;
+  font-size: ${({theme}) => theme.fontSize.xxl};
+  cursor: pointer;
+  opacity: .3;
+
+  &:hover {
+    opacity: 1;
+  }
+`;
+
 export const StyledGroupIcon = styled(GroupAddIcon)`
   position: absolute;
   right: 3rem;
@@ -125,6 +140,12 @@ const SetCard: FC<TSet> = ({name, userId, id, isPublic}) => {
         e.stopPropagation()
         navigate(`${ROUTES.PROTECTED.MANAGE_SET}/${id}`)
     }
+
+    const handleGoToMiniGame = (e: any) => {
+        e.stopPropagation()
+        navigate(`${ROUTES.PROTECTED.MINIGAME}/${id}`)
+    }
+
     const handleLearnRedirect = () => navigate(`${ROUTES.PROTECTED.LEARN_SET}/${id}`)
 
     const handleShare = async (e: any) => {
@@ -168,6 +189,7 @@ const SetCard: FC<TSet> = ({name, userId, id, isPublic}) => {
                         <PublicIcon fontSize={"inherit"}/>
                     </PublicIconWrapper>}
                     {!isPublic && <StyledEditIcon onClick={handleEditRedirect}/>}
+                    {!isPublic && <StyledAirPlayIcon onClick={handleGoToMiniGame}/>}
                     {showPublic
                         ? null
                         : (!isPublic
